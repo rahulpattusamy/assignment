@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Match, FilterType } from '@/types/player';
 
 import MatchModal from './MatchModal';
@@ -14,6 +14,8 @@ export default function MatchHistory({ matches }: MatchHistoryProps) {
     const [filter, setFilter] = useState<FilterType>('All');
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
+    const [visibleCount, setVisibleCount] = useState(9);
+    const loaderRef = useRef<HTMLDivElement>(null);
 
     const filteredMatches = matches.filter((match) => {
         const matchesFilter = filter === 'All' || match.result === filter;
@@ -25,6 +27,34 @@ export default function MatchHistory({ matches }: MatchHistoryProps) {
         return matchesFilter && matchesSearch;
     });
 
+    // Reset visibility when filters change
+    useEffect(() => {
+        setVisibleCount(9);
+    }, [filter, searchQuery]);
+
+    // Infinite scroll observer
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting) {
+                    setVisibleCount((prev) => prev + 9);
+                }
+            },
+            { threshold: 0.1 }
+        );
+
+        if (loaderRef.current) {
+            observer.observe(loaderRef.current);
+        }
+
+        return () => {
+            if (loaderRef.current) {
+                observer.unobserve(loaderRef.current);
+            }
+        };
+    }, [filteredMatches]); // Re-run if list changes to ensure observer is attached to new ref if needed
+
+    const displayedMatches = filteredMatches.slice(0, visibleCount);
     const filters: FilterType[] = ['All', 'Won', 'Lost', 'Draw'];
 
     return (
@@ -69,7 +99,7 @@ export default function MatchHistory({ matches }: MatchHistoryProps) {
                     </div>
 
                     <div className="text-sm text-gray-400">
-                        Showing <span className="text-valo-cyan font-bold">{filteredMatches.length}</span> of{' '}
+                        Showing <span className="text-valo-cyan font-bold">{Math.min(visibleCount, filteredMatches.length)}</span> of{' '}
                         <span className="text-valo-cyan font-bold">{matches.length}</span> matches
                     </div>
                 </div>
@@ -83,16 +113,28 @@ export default function MatchHistory({ matches }: MatchHistoryProps) {
                     <p className="text-gray-400">Try adjusting your filters or search query</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
-                    {filteredMatches.map((match, index) => (
-                        <MatchCard
-                            key={`${match.date_and_time}-${index}`}
-                            match={match}
-                            onClick={() => setSelectedMatch(match)}
-                            index={index}
-                        />
-                    ))}
-                </div>
+                <>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
+                        {displayedMatches.map((match, index) => (
+                            <MatchCard
+                                key={`${match.date_and_time}-${index}`}
+                                match={match}
+                                onClick={() => setSelectedMatch(match)}
+                                index={index}
+                            />
+                        ))}
+                    </div>
+
+                    {/* Loader Sentinel */}
+                    {visibleCount < filteredMatches.length && (
+                        <div
+                            ref={loaderRef}
+                            className="py-8 flex justify-center opacity-50 animate-pulse"
+                        >
+                            <div className="loader w-10 h-10 border-2" />
+                        </div>
+                    )}
+                </>
             )}
 
             {selectedMatch && (

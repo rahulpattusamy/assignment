@@ -11,6 +11,11 @@ export default function PerformanceChart({ matches }: PerformanceChartProps) {
     const mapPerformance = calculateMapPerformance(matches).slice(0, 5);
     const maxWinRate = Math.max(...mapPerformance.map((m: any) => m.winRate));
 
+    const getMapColor = (index: number) => {
+        const colors = ['#00e5ff', '#ffce00', '#00d4aa', '#9d4edd', '#ff4655'];
+        return colors[index % colors.length];
+    };
+
     return (
         <div className="card animate-slide-up animate-delay-200">
             <h2 className="text-2xl font-bold mb-2">Map Performance</h2>
@@ -30,10 +35,10 @@ export default function PerformanceChart({ matches }: PerformanceChartProps) {
 
                         <div className="relative w-full h-8 bg-valo-dark rounded-lg overflow-hidden mb-3">
                             <div
-                                className={`h-full flex items-center justify-end px-3 rounded-lg transition-all duration-1000 ease-out ${map.winRate >= 50 ? 'bg-gradient-secondary' : 'bg-gradient-primary'
-                                    }`}
+                                className={`h-full flex items-center justify-end px-3 rounded-lg transition-all duration-1000 ease-out`}
                                 style={{
                                     width: `${(map.winRate / maxWinRate) * 100}%`,
+                                    backgroundColor: getMapColor(index),
                                     animationDelay: `${(index + 4) * 100}ms`
                                 }}
                             >

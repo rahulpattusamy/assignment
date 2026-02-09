@@ -2,10 +2,20 @@
 
 import { useEffect, useState } from 'react';
 import { PlayerData } from '@/types/player';
-import PlayerProfile from './PlayerProfile';
-import StatsOverview from './StatsOverview';
-import PerformanceChart from './PerformanceChart';
-import MatchHistory from './MatchHistory';
+import dynamic from 'next/dynamic';
+
+const PlayerProfile = dynamic(() => import('./PlayerProfile'), {
+  loading: () => <div className="animate-pulse h-96 bg-valo-darker rounded-2xl border border-valo-border" />
+});
+const StatsOverview = dynamic(() => import('./StatsOverview'), {
+  loading: () => <div className="animate-pulse h-48 bg-valo-darker rounded-2xl border border-valo-border" />
+});
+const PerformanceChart = dynamic(() => import('./PerformanceChart'), {
+  loading: () => <div className="animate-pulse h-64 bg-valo-darker rounded-2xl border border-valo-border" />
+});
+const MatchHistory = dynamic(() => import('./MatchHistory'), {
+  loading: () => <div className="animate-pulse h-[800px] bg-valo-darker rounded-2xl border border-valo-border" />
+});
 
 export default function Dashboard() {
   const [playerData, setPlayerData] = useState<PlayerData | null>(null);

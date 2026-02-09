@@ -5,6 +5,7 @@ import { PlayerData } from '@/types/player';
 import PlayerProfile from './PlayerProfile';
 import StatsOverview from './StatsOverview';
 import PerformanceChart from './PerformanceChart';
+import MatchHistory from './MatchHistory';
 
 export default function Dashboard() {
   const [playerData, setPlayerData] = useState<PlayerData | null>(null);
@@ -67,6 +68,7 @@ export default function Dashboard() {
         <PlayerProfile player={playerData} />
         <StatsOverview player={playerData} />
         <PerformanceChart matches={playerData.matches} />
+        <MatchHistory matches={playerData.matches} />
 
       </main>
 

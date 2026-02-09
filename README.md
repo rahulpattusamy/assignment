@@ -1,4 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ValoCoach
+
+**Elite Performance Tracking for Valorant**
+
+ValoCoach is a sophisticated dashboard designed for competitive Valorant players to track their performance, analyze match history, and visualize key metrics.
+
+## Features
+
+- **Player Profile**: Comprehensive overview including rank, account level, and peak performance stats.
+- **Statistical Analysis**: Deep dive into your gameplay with metrics like Headshot %, K/D Ratio, Average Combat Score (ACS), and Win Rate.
+- **Match History**: Detailed log of recent matches with round-by-round performance breakdown.
+- **Performance Visualization**: Interactive charts to track your progress over time.
+- **Agent & Map Metrics**: Insights into your best agents and maps.
+
+## Tech Stack
+
+This project is built with a modern, high-performance web stack:
+
+- **[Next.js 16](https://nextjs.org/)**: React framework for production.
+- **[React 19](https://react.dev/)**: For building interactive user interfaces.
+- **[Tailwind CSS v4](https://tailwindcss.com/)**: A utility-first CSS framework for rapid UI development.
+- **TypeScript**: For type safety and better developer experience.
 
 ## Getting Started
 
@@ -14,11 +35,14 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open(https://valocoach-mauve.vercel.app/) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/`: Contains the application routes and components.
+- `app/components/`: Reusable UI components like `Dashboard`, `PlayerProfile`, `StatsOverview`, etc.
+- `public/`: Static assets including `player.json` (mock data).
+- `types/`: TypeScript type definitions.
 
 ## Learn More
 
@@ -26,11 +50,3 @@ To learn more about Next.js, take a look at the following resources:
 
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
